@@ -7,9 +7,8 @@ import {
   Route,
   useHistory,
 } from "react-router-dom";
+import s from "./Movie.module.scss";
 import { getMovieById } from "../../servises/api/api";
-// import Cast from "../Cast/Cast";
-// import Review from "../Review/Review";
 
 const Cast = lazy(() =>
   import("../Cast/Cast" /* webpackChunkName: "Cast__page" */)
@@ -19,16 +18,17 @@ const Review = lazy(() =>
   import("../Review/Review" /* webpackChunkName: "Review__page" */)
 );
 
-const Movie = ({ movieId }) => {
+const Movie = () => {
   const [movie, setMovie] = useState({});
-  const [genres, setGenres] = useState([]);
+  console.log("✈️ ~ movie", movie);
+  const [localStorageValue, setLocalStorageValue] = useState("");
   const history = useHistory();
   const params = useParams();
-  console.log("✈️ ~ params", params);
   const location = useLocation();
-  console.log("✈️ ~ location", location);
+  const img = `https://image.tmdb.org/t/p/w300/${movie.poster_path}`;
 
   const genresList = movie.genres?.map((item) => item.name).join(", ");
+
   const hendleGoBack = () => {
     history.push(location.state.from);
   };
@@ -36,16 +36,26 @@ const Movie = ({ movieId }) => {
   useEffect(() => {
     getMovieById(params.id).then((film) => setMovie(film));
   }, [params]);
-  const img = `https://image.tmdb.org/t/p/w300/${movie.poster_path}`;
+
   return (
     <>
       <div>
         <button onClick={hendleGoBack}>Go back</button>
-        <img src={img} alt="" />
-        <p>{movie.title}</p>
-        <p>{genresList}</p>
-        {/* <NavLink to={`/movie/${params.id}/cast`}>Cast</NavLink> */}
+        <div className={s.paperMovie}>
+          <img src={img} alt="" />
+          <div className={s.movieDescr}>
+            <p>
+              {movie.title}({new Date(movie.release_date).getFullYear()})
+            </p>
+            <p>User score: {movie.vote_average * 10}%</p>
+            <p>Overview</p>
+            <p>{movie.overview}</p>
+            <p>Genres: </p>
+            <p>{genresList}</p>
+          </div>
+        </div>
         <NavLink
+          className={s.linkCast}
           to={{
             pathname: `/movie/${params.id}/cast`,
             state: {
@@ -69,10 +79,14 @@ const Movie = ({ movieId }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route path="/movie/:id/cast">
-            <Cast id={params.id} />
+            <ul className={s.cast}>
+              <Cast id={params.id} />
+            </ul>
           </Route>
           <Route path="/movie/:id/review">
-            <Review id={params.id} />
+            <ul>
+              <Review id={params.id} />
+            </ul>
           </Route>
         </Switch>
       </Suspense>

@@ -1,9 +1,7 @@
 import { Switch, Route, useParams } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense } from "react";
-// import Gallery from "../_components/Gallery/Gallery";
-// import SearchMovies from "../_components/SearchMovies/SearchMovies";
 import Header from "../_components/Header/Header";
-// import Movie from "../_components/Movie/Movie";
+import s from "./App.scss";
 
 const Gallery = lazy(() =>
   import(

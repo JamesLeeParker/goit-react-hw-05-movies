@@ -13,15 +13,19 @@ const Input = ({ getValue }) => {
   const heandleChange = (e) => {
     e.preventDefault();
     setValue(e.target.value);
-    // getValue(value);
-    // save(STORAGE_KEY, value);
+    save(STORAGE_KEY, e.target.value);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     getValue(value);
-    save(STORAGE_KEY, value);
   };
+
+  useEffect(() => {
+    localStorage.getItem(STORAGE_KEY) !== "" && setValue(get(STORAGE_KEY));
+    getValue(value);
+  }, [value]);
+
   return (
     <form onSubmit={onSubmit}>
       <label>
