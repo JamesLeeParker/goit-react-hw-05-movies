@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/_components/Cast/Cast.module.scss"],"names":[],"mappings":"AAAA,qBACE,iBAAA","file":"Cast__page.7ed6ef3f.chunk.css","sourcesContent":[".actorLi {\r\n  margin-right: 10px;\r\n}\r\n"]}
