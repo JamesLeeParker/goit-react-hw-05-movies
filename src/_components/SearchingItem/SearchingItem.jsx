@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getSearchMovies } from "../../servises/api/api";
 
 const SearchingItem = ({ searchingQuery }) => {
   const [films, setFilms] = useState([]);
-  let query = "bat";
-  console.log(searchingQuery);
+  const location = useLocation();
+  console.log("✈️ ~ location!!!!!!!!", location);
+
   useEffect(() => {
     if (!searchingQuery) return;
     getSearchMovies(searchingQuery).then((res) => {
@@ -17,7 +18,14 @@ const SearchingItem = ({ searchingQuery }) => {
     const img = `https://image.tmdb.org/t/p/w300/${film.poster_path}`;
     return (
       <li key={film.id}>
-        <Link to={`/movie/${film.id}`}>
+        <Link
+          to={{
+            pathname: `/movie/${film.id}`,
+            state: {
+              from: location,
+            },
+          }}
+        >
           <img src={img} alt="" width="100" />
           <p>{film.title}</p>
         </Link>
